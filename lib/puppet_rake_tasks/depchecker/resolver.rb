@@ -1,12 +1,16 @@
 require 'puppet'
 require 'puppet/module_tool'
 
+require_relative 'helpers'
+
 module PuppetRakeTasks
   module DepChecker
     # Class that can detect all puppet module dependency issues.
     class Resolver
+      include Helpers
+
       def initialize(module_path = '.')
-        @modulepath = [module_path].flatten
+        @modulepath = Helpers.normalize_path(module_path)
       end
 
       def env
@@ -39,7 +43,7 @@ module PuppetRakeTasks
           # reset the env and loaded modules when changing the modulepath
           reset_caches
         end
-        @modulepath = [path].flatten
+        @modulepath = Helpers.normalize_path(path)
       end
 
     end
