@@ -1,0 +1,4 @@
+---
+# Line length 80... what is this, the 90's?
+Metrics/LineLength:
+    Max: 140
