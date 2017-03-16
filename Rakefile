@@ -4,7 +4,6 @@ require 'rubocop/rake_task'
 require 'yard'
 require 'yard/rake/yardoc_task'
 
-# Rake::Task['rubocop'].clear
 desc 'Run rubocop'
 RuboCop::RakeTask.new(:rubocop) do |task|
   task.formatters = %w(fuubar offenses)
