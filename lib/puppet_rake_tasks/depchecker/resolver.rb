@@ -2,6 +2,7 @@ require 'puppet'
 require 'puppet/module_tool'
 
 require_relative 'helpers'
+require_relative 'incidents'
 
 module PuppetRakeTasks
   module DepChecker
@@ -9,6 +10,7 @@ module PuppetRakeTasks
     # It uses puppet module tool internals to detect all issues.
     class Resolver
       include Helpers
+      include Incidents
 
       def initialize(module_path = '.')
         @modulepath = Helpers.normalize_path(module_path)
