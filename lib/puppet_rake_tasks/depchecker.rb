@@ -23,7 +23,8 @@ module PuppetRakeTasks
         yield(@depchecker, *args).slice(0, task_block.arity) if block_given?
         Rake::Task[@name].clear if Rake::Task.task_defined?(@name)
         task @name do
-          # TODO: RUN TASK
+          issues = @depchecker.filtered
+          @depchecker.report unless issues.empty?
         end
       end
       private :define
