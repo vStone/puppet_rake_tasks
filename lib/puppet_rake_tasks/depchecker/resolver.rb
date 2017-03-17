@@ -45,7 +45,6 @@ module PuppetRakeTasks
         end
         @modulepath = Helpers.normalize_path(path)
       end
-
     end
   end
 end
