@@ -4,6 +4,7 @@ require 'puppet/module_tool'
 require_relative 'helpers'
 require_relative 'ignores'
 require_relative 'incidents'
+require_relative 'filter'
 
 module PuppetRakeTasks
   module DepChecker
@@ -13,6 +14,7 @@ module PuppetRakeTasks
       include Helpers
       include Ignores
       include Incidents
+      include Filter
 
       def initialize(module_path = '.')
         @modulepath = Helpers.normalize_path(module_path)
