@@ -12,10 +12,27 @@ module PuppetRakeTasks
       # You can not have a module with the same name installed in your tree anyhow.
       #
       # @example Adding a rule for a single module.
+      #   # Ignores the stdlib version mismatch on `your_module`.
+      #   @depchecker.ignore 'your_module', { name: 'puppetlabs/stdlib', reason: :version_mismatch }
       #
       # @example Adding a rule for a single module with regexp values.
+      #   # Ignores all modules from author `custom` that are missing.
+      #   @depchecker.ignore 'your_module', { name: %r{^custom/.*}, reason: :missing }
       #
       # @example Adding a rule for all modules using a regexp.
+      #   # ignores a missing module for all modules that might declare it as a dependency.
+      #   @depchecker.ignore %r{.*}, { name: 'foobar/module', reason: :missing }
+      #
+      # @example Loading ignores from a (yaml) file
+      #   @depchecker.ignores = YAML.load_file('.ignores.yaml')
+      #   # .ignores.yaml
+      #   # ---
+      #   # !ruby/regexp /.*/:
+      #   #   - :name: always/missing
+      #   #     :reason: :missing
+      #   # foobar:
+      #   #   - :name: !ruby/regexp /.*/
+      #   #     :reason: :version_mismatch
       #
       module Ignores
         extend Helpers
