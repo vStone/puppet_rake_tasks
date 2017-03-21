@@ -17,9 +17,9 @@ describe PuppetRakeTasks::DepChecker::Task do
     end
 
     it 'allow configuration' do
-      described_class.new do |c|
+      expect(described_class.new do |c|
         c.modulepath = ['foobar']
-      end
+      end.depchecker.modulepath).to eq ['foobar']
     end
   end
 end

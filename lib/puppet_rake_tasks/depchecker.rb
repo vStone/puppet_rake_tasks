@@ -15,6 +15,9 @@ module PuppetRakeTasks
       # Name of the task. Defaults to `:depcheck`.
       attr_accessor :name
 
+      # Instance of the dependency resolver.
+      attr_reader :depchecker
+
       # Create a new task instance.
       def initialize(*args, &task_block)
         @name = args.shift || :depcheck
@@ -36,7 +39,7 @@ module PuppetRakeTasks
       # Define the rake task.
       def define(args, &task_block)
         desc 'Check puppet module dependencies'
-        yield(@depchecker, *args).slice(0, task_block.arity) if block_given?
+        yield(*[@depchecker, args].slice(0, task_block.arity)) if task_block
         task name, *args, &method(:execution)
       end
     end
