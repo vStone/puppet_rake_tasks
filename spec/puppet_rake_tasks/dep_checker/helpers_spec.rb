@@ -3,6 +3,44 @@ require 'spec_helper'
 require 'puppet_rake_tasks/depchecker/helpers'
 
 describe PuppetRakeTasks::DepChecker::Helpers do
+  describe '.swat_hash' do
+    context 'hash keys are symbols' do
+      let(:source) { { foo: 'bar', sub: { swatn: 'fly', swatit: 'flat' } } }
+      it 'expands keys' do
+        result = {
+          foo: 'bar', :'sub.swatn' => 'fly', :'sub.swatit' => 'flat'
+        }
+        expect(described_class.swat_hash(source)).to match(result)
+      end
+    end
+
+    context 'hash keys are strings' do
+      let(:source) { { 'foo' => 'bar', 'sub' => { 'swatn' => 'fly', 'swatit' => 'flat' } } }
+      it 'expands keys' do
+        result = {
+          foo: 'bar', :'sub.swatn' => 'fly', :'sub.swatit' => 'flat'
+        }
+        expect(described_class.swat_hash(source)).to match(result)
+      end
+    end
+
+    context 'nested hashes' do
+      let(:source) { { one: { two: { three: 'success' } }, foo: { 'bar' => 'woopie' } } }
+      it 'expands keys' do
+        result = {
+          :'one.two.three' => 'success', :'foo.bar' => 'woopie'
+        }
+        expect(described_class.swat_hash(source)).to match(result)
+      end
+    end
+    context 'custom glue' do
+      let(:source) { { one: { two: { three: 'success' } }, foo: { 'bar' => 'woopie' } } }
+      it 'expands keys' do
+        expect(described_class.swat_hash(source, '__')).to match(one__two__three: 'success', foo__bar: 'woopie')
+      end
+    end
+  end
+
   describe '.normalize_path' do
     it 'converts an string to array' do
       result = described_class.normalize_path('foo:bar')
