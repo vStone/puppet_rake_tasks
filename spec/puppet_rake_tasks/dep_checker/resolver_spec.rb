@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require 'spec_helper'
 require 'puppet_rake_tasks/depchecker/resolver'
 
@@ -11,7 +9,7 @@ describe PuppetRakeTasks::DepChecker::Resolver do
     end
   end
 
-  context 'puppet module tool items' do
+  context 'with puppet module tool items' do
     describe '#env' do
       it 'returns a puppet environment' do
         resolver = described_class.new
@@ -22,6 +20,7 @@ describe PuppetRakeTasks::DepChecker::Resolver do
 
     describe '#modules' do
       let(:module_path) { File.join(FIXTURES_ROOT, 'tree') }
+
       it 'collects modules using moduletool' do
         resolver = described_class.new(module_path)
         result = resolver.modules
@@ -39,6 +38,7 @@ describe PuppetRakeTasks::DepChecker::Resolver do
       resolver.instance_variable_set(:@incidents, :mock_incidents)
       resolver
     end
+
     it 'resets the env cache' do
       resolver.reset_caches
       expect(resolver.instance_variable_get(:@env)).to be_nil

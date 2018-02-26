@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require 'spec_helper'
 require 'puppet_rake_tasks/depchecker/ignores'
 
@@ -7,6 +5,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
   describe '#ignores=' do
     let(:module_path) { File.join(FIXTURES_ROOT, 'tree') }
     let(:resolver) { PuppetRakeTasks::DepChecker::Resolver.new(module_path) }
+
     it 'sets the ignore rules' do
       resolver.ignores = 'foobar'
       expect(resolver.ignores).to match('foobar')
@@ -22,6 +21,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
 
   describe '#ignore' do
     let(:resolver) { PuppetRakeTasks::DepChecker::Resolver.new }
+
     it 'adds a new ignore rule' do
       resolver.ignore 'bar', name: 'foobar'
       expect(resolver.ignores_for_module('bar')).to match([{ name: 'foobar' }])
@@ -38,6 +38,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
 
   describe '#ignores' do
     let(:resolver) { PuppetRakeTasks::DepChecker::Resolver.new }
+
     it 'returns configured ignores' do
       resolver.ignores = { 'bar' => [{ name: 'foobar' }] }
       expect(resolver.ignores).to match('bar' => [{ name: 'foobar' }])
@@ -46,12 +47,13 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
 
   describe '#ignores_for_module' do
     let(:resolver) { PuppetRakeTasks::DepChecker::Resolver.new }
+
     it 'returns configured ignores for a module' do
       resolver.ignores = { 'bar' => [], 'foo' => [{ name: 'bar' }, { other: /.*/ }] }
       expect(resolver.ignores_for_module('foo')).to match([{ name: 'bar' }, { other: /.*/ }])
     end
     it 'uses the cached ignore rules for the module' do
-      allow(resolver).to receive(:collect_ignores_for_module) { {} }
+      allow(resolver).to receive(:collect_ignores_for_module).and_return({})
       resolver.ignores_for_module('foo')
       resolver.ignores_for_module('foo')
       expect(resolver).to have_received(:collect_ignores_for_module).once
@@ -69,18 +71,20 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
         mod_details: { installed_version: '1.0.0' }
       }
     end
+
     before do
       resolver.ignores = {}
     end
 
-    context 'returns false if there are no ignore rules' do
+    context 'when there are no ignore rules' do
       let(:resolver) { PuppetRakeTasks::DepChecker::Resolver.new }
-      it do
+
+      it 'returns false' do
         expect(resolver.ignores_matches_incident('foo', incident)).to match(false)
       end
     end
 
-    context 'returns true if an ignore rule matches' do
+    context 'when an ignore rule matches' do
       it 'by name only' do
         resolver.ignore 'bar', name: 'vstone/foo'
         expect(resolver.ignores_matches_incident('bar', incident)).to match(true)
@@ -99,7 +103,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
       expect(resolver.ignores_matches_incident('bar', incident)).to match(false)
     end
 
-    context 'ignore-rules with regexes' do
+    context 'with ignore-rules containing regexes' do
       it 'matches modulenames' do
         resolver.ignore 'bar', name: %r{vstone/.*}
         expect(resolver.ignores_matches_incident('bar', incident)).to match(true)

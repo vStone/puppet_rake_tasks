@@ -1,4 +1,4 @@
-# coding: utf-8
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'puppet_rake_tasks/version'
@@ -10,9 +10,9 @@ Gem::Specification.new do |spec|
   spec.email         = ['jan@vstone.eu']
 
   spec.summary       = 'Contains various rake tasks for your puppet tree.'
-  spec.description   = <<-EODESC
+  spec.description   = <<-DESCRIPTION
     DepChecker: Creates a rake task that uses puppet module to check dependencies.'
-  EODESC
+  DESCRIPTION
   spec.homepage      = 'https://github.com/vStone/rake-puppet_module_task'
   spec.license       = 'GPL-3'
 

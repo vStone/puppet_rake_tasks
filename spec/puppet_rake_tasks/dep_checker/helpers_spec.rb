@@ -1,11 +1,12 @@
-# -*- encoding: utf-8 -*-
+
 require 'spec_helper'
 require 'puppet_rake_tasks/depchecker/helpers'
 
 describe PuppetRakeTasks::DepChecker::Helpers do
   describe '.swat_hash' do
-    context 'hash keys are symbols' do
+    context 'when hash keys are symbols' do
       let(:source) { { foo: 'bar', sub: { swatn: 'fly', swatit: 'flat' } } }
+
       it 'expands keys' do
         result = {
           foo: 'bar', :'sub.swatn' => 'fly', :'sub.swatit' => 'flat'
@@ -14,8 +15,9 @@ describe PuppetRakeTasks::DepChecker::Helpers do
       end
     end
 
-    context 'hash keys are strings' do
+    context 'when hash keys are strings' do
       let(:source) { { 'foo' => 'bar', 'sub' => { 'swatn' => 'fly', 'swatit' => 'flat' } } }
+
       it 'expands keys' do
         result = {
           foo: 'bar', :'sub.swatn' => 'fly', :'sub.swatit' => 'flat'
@@ -24,8 +26,9 @@ describe PuppetRakeTasks::DepChecker::Helpers do
       end
     end
 
-    context 'nested hashes' do
+    context 'with nested hashes' do
       let(:source) { { one: { two: { three: 'success' } }, foo: { 'bar' => 'woopie' } } }
+
       it 'expands keys' do
         result = {
           :'one.two.three' => 'success', :'foo.bar' => 'woopie'
@@ -33,8 +36,9 @@ describe PuppetRakeTasks::DepChecker::Helpers do
         expect(described_class.swat_hash(source)).to match(result)
       end
     end
-    context 'custom glue' do
+    context 'with custom glue' do
       let(:source) { { one: { two: { three: 'success' } }, foo: { 'bar' => 'woopie' } } }
+
       it 'expands keys' do
         expect(described_class.swat_hash(source, '__')).to match(one__two__three: 'success', foo__bar: 'woopie')
       end
@@ -44,16 +48,16 @@ describe PuppetRakeTasks::DepChecker::Helpers do
   describe '.normalize_path' do
     it 'converts an string to array' do
       result = described_class.normalize_path('foo:bar')
-      expect(result).to match(%w(foo bar))
+      expect(result).to match(%w[foo bar])
     end
     it 'flattens an array' do
-      result = described_class.normalize_path(['foo', %w(bar foobar)])
-      expect(result).to match(%w(foo bar foobar))
+      result = described_class.normalize_path(['foo', %w[bar foobar]])
+      expect(result).to match(%w[foo bar foobar])
     end
   end
 
   describe '.compare_values' do
-    context 'if the first argument is a regex' do
+    context 'when the first argument is a regex' do
       it 'returns true if it matches' do
         result = described_class.compare_values(/^foo/, 'foobar')
         expect(result).to match(true)
@@ -67,7 +71,7 @@ describe PuppetRakeTasks::DepChecker::Helpers do
         expect(result).to match(true)
       end
     end
-    context 'symbol arguments' do
+    context 'with symbol arguments' do
       it 'returns true if both equal symbols' do
         result = described_class.compare_values(:foo, :foo)
         expect(result).to match(true)
@@ -85,7 +89,7 @@ describe PuppetRakeTasks::DepChecker::Helpers do
         expect(result).to match(false)
       end
     end
-    context 'other arguments' do
+    context 'with other arguments' do
       it 'returns true if it matches' do
         result = described_class.compare_values(1, 1)
         expect(result).to match(true)

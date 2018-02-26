@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require 'spec_helper'
 require 'puppet_rake_tasks/depchecker/report'
 
@@ -12,6 +10,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Report do
                     version_constraint: '> 0.0.1',
                     mod_details: { installed_version: nil } }] }
     end
+
     it 'outputs issues' do
       allow(resolver).to receive(:filtered) { filtered }
       expect { resolver.report }.to output(%r{^ERROR: module foo: missing dependency vstone/bar.}).to_stderr
@@ -49,12 +48,13 @@ describe PuppetRakeTasks::DepChecker::Resolver::Report do
         mod_details: { installed_version: nil }
       }
     end
+
     it 'formats a single incident' do
       expect do
         reporter.format_incident(incident)
       end.to output(%r{^ERROR: module bar: missing dependency vstone/foo.}).to_stderr
     end
-    context 'custom format' do
+    context 'with a custom format' do
       it 'is used' do
         expect do
           reporter.format = 'CUSTOM: %<module_name>s'

@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require 'spec_helper'
 require 'puppet_rake_tasks/depchecker'
 
@@ -11,6 +9,7 @@ describe PuppetRakeTasks::DepChecker::Task do
     end
     context 'with a name passed to the constructor' do
       let(:task) { described_class.new(:task_name) }
+
       it 'correctly sets the name' do
         expect(task.name).to eq :task_name
       end

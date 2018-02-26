@@ -6,8 +6,8 @@ group :development do
   gem 'awesome_print'
   gem 'rake', '~> 10.0'
   gem 'rspec', '~> 3.5'
-  gem 'rubocop', '~> 0.47.1'
-  gem 'rubocop-rspec', '~> 1.10.0'
+  gem 'rubocop', '~> 0.52.1', require: false
+  gem 'rubocop-rspec', '~> 1.23.0'
 end
 
 group :documentation do
