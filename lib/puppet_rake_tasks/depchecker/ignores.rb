@@ -77,7 +77,7 @@ module PuppetRakeTasks
           # Look for a match, return true immediately, otherwise, false
           loop_ignores.each do |ign|
             this_ignore = true
-            ign.keys.each do |k|
+            ign.each_key do |k|
               compare = Helpers.compare_values(ign[k], incident[k])
               this_ignore = false unless compare
             end

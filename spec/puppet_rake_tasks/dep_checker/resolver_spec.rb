@@ -9,7 +9,7 @@ describe PuppetRakeTasks::DepChecker::Resolver do
     end
   end
 
-  context 'puppet module tool items' do
+  context 'with puppet module tool items' do
     describe '#env' do
       it 'returns a puppet environment' do
         resolver = described_class.new

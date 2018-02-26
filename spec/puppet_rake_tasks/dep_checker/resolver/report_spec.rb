@@ -54,7 +54,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Report do
         reporter.format_incident(incident)
       end.to output(%r{^ERROR: module bar: missing dependency vstone/foo.}).to_stderr
     end
-    context 'custom format' do
+    context 'with a custom format' do
       it 'is used' do
         expect do
           reporter.format = 'CUSTOM: %<module_name>s'

@@ -76,15 +76,15 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
       resolver.ignores = {}
     end
 
-    context 'returns false if there are no ignore rules' do
+    context 'when there are no ignore rules' do
       let(:resolver) { PuppetRakeTasks::DepChecker::Resolver.new }
 
-      it do
+      it 'returns false' do
         expect(resolver.ignores_matches_incident('foo', incident)).to match(false)
       end
     end
 
-    context 'returns true if an ignore rule matches' do
+    context 'when an ignore rule matches' do
       it 'by name only' do
         resolver.ignore 'bar', name: 'vstone/foo'
         expect(resolver.ignores_matches_incident('bar', incident)).to match(true)
@@ -103,7 +103,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Ignores do
       expect(resolver.ignores_matches_incident('bar', incident)).to match(false)
     end
 
-    context 'ignore-rules with regexes' do
+    context 'with ignore-rules containing regexes' do
       it 'matches modulenames' do
         resolver.ignore 'bar', name: %r{vstone/.*}
         expect(resolver.ignores_matches_incident('bar', incident)).to match(true)
