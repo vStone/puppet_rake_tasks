@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require 'spec_helper'
 require 'puppet_rake_tasks/depchecker/filter'
 
@@ -16,7 +14,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Filter do
       expect(filtered).to include('foo' => a_kind_of(Array)).and not_include('bar')
     end
     it 'caches filtered incidents' do
-      allow(resolver).to receive(:filter_incidents) { {} }
+      allow(resolver).to receive(:filter_incidents).and_return({})
       resolver.filtered
       resolver.filtered
       expect(resolver).to have_received(:filter_incidents).once
@@ -35,6 +33,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Filter do
         ]
       }
     end
+
     it 'filters incidents for a module' do
       allow(resolver).to receive(:ignores) { ignores }
       expect(resolver.send(:filter_module_incidents, 'bar', incidents['bar'])).to match(
@@ -55,6 +54,7 @@ describe PuppetRakeTasks::DepChecker::Resolver::Filter do
         ]
       }
     end
+
     it 'filters all incidents for all modules' do
       allow(resolver).to receive(:ignores) { ignores }
       allow(resolver).to receive(:incidents) { incidents }

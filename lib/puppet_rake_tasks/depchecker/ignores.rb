@@ -65,9 +65,7 @@ module PuppetRakeTasks
         # Returns ignore rules that might apply to the modulename and caches the result.
         # @param modulename [String] module name to get ignore rules for in its simple form.
         def ignores_for_module(modulename)
-          if (@ignores_for_module ||= {})[modulename].nil?
-            @ignores_for_module[modulename] ||= collect_ignores_for_module(modulename)
-          end
+          @ignores_for_module[modulename] ||= collect_ignores_for_module(modulename) if (@ignores_for_module ||= {})[modulename].nil?
           @ignores_for_module[modulename]
         end
 
@@ -95,9 +93,7 @@ module PuppetRakeTasks
         def collect_ignores_for_module(modulename)
           tmp_ignores = []
           ignores.each do |k, i|
-            if (k.is_a?(String) && k == modulename) || (k.is_a?(Regexp) && modulename =~ k)
-              tmp_ignores += i
-            end
+            tmp_ignores += i if (k.is_a?(String) && k == modulename) || (k.is_a?(Regexp) && modulename =~ k)
           end
           tmp_ignores
         end
